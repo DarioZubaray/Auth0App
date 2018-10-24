@@ -1,9 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService {
+export class AuthGuardService implements CanActivate {
 
-  constructor() { }
+  constructor(private auth: AuthService) { }
+
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    console.log(next);
+    if( this.auth.isAuthenticated()) {
+      console.log("El usuario esta autenticado segun Auth0");
+      return true;
+    } else {
+      console.error("Bloqueado por el guard");
+      return false;
+    }
+  }
 }
